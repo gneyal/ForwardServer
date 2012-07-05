@@ -10,25 +10,25 @@ public class ForwardServer implements Runnable {
 	/**
 	 * @param args
 	 */
-
+	
 	public static Socket socket1;
 	public static Socket socket2;
 
-	public static OutThread outThread1;
+	public static Output output1;
 	public static InputThread inputThread1;
 
-	public static OutThread outThread2;
+	public static Output output2;
 	public static InputThread inputThread2;
 
 	public ForwardServer(Socket s1, Socket s2) {
 		socket1 = s1;
 		socket2 = s2;
 
-		outThread1 = new OutThread(socket1);
-		outThread2 = new OutThread(socket2);
+		output1 = new Output(socket1);
+		output2 = new Output(socket2);
 
-		inputThread1 = new InputThread(socket1, outThread2);
-		inputThread2 = new InputThread(socket2, outThread1);
+		inputThread1 = new InputThread(socket1, output2);
+		inputThread2 = new InputThread(socket2, output1);
 	}
 
 	public void run() {
@@ -36,12 +36,27 @@ public class ForwardServer implements Runnable {
 		new Thread(inputThread2).start();
 	}
 
+	public class Output {
+		PrintWriter printWriter;
+		public Output(Socket socket) {
+			try {
+				printWriter = new PrintWriter(socket.getOutputStream(), true);
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+		public void send(String msg) {
+			printWriter.println(msg);
+		}
+	}
+	
 	public class InputThread implements Runnable {
 		BufferedReader in;
-		OutThread out;
+		Output out;
 		String userInput;
 
-		public InputThread(Socket socket, OutThread out) {
+		public InputThread(Socket socket, Output out) {
 			try {
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				this.out = out;
@@ -64,22 +79,6 @@ public class ForwardServer implements Runnable {
 			}
 		}
 	}
-	public class OutThread {
-		PrintWriter printWriter;
-		public OutThread(Socket socket) {
-			try {
-				printWriter = new PrintWriter(socket.getOutputStream(), true);
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-		}
-		public void send(String msg) {
-			printWriter.println(msg);
-		}
-	}
-	// prepare the output thread
-	// prepare the input thread
 
 	public static void main(String[] args) {
 		ServerSocket serverSocket1;
