@@ -125,16 +125,8 @@ public class ForwardServer implements Runnable {
 		// run thread1
 		System.out.println("Running the ForwardServer");
 		ForwardServer fs = new ForwardServer(socket1, socket2);
-//		public static OutThread outThread1;
-//		public static InputThread inputThread1;
 
-
-		// build new thread - thread2 - with socket2 in and socket 1 out
-		// run thread2
 		fs.run();
-
-
-
 	}
 
 }
