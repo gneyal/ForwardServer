@@ -7,9 +7,6 @@ public class ForwardServer implements Runnable {
 
 	public static final int PORT1 = 12333;
 	public static final int PORT2 = 12335;
-	/**
-	 * @param args
-	 */
 	
 	public static Socket socket1;
 	public static Socket socket2;
@@ -84,7 +81,6 @@ public class ForwardServer implements Runnable {
 		ServerSocket serverSocket1;
 		ServerSocket serverSocket2;
 
-		// TODO Auto-generated method stub
 		// build serversocket 1
 		try {
 			System.out.println("Creating ServerSocket(PORT1)");
@@ -120,8 +116,7 @@ public class ForwardServer implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// build new thread - thread1 - with socket1 in and socket 2 out
-		// run thread1
+		
 		System.out.println("Running the ForwardServer");
 		ForwardServer fs = new ForwardServer(socket1, socket2);
 
